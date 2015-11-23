@@ -12,7 +12,7 @@ module topmodule (input clk, input reset);
 	wire [4:0] p1_func;
 
 	wire ControlMux, hduPCWrite, IF_IDWrite, ForwardAS, ForwardLS;
-	wire ControlMux, hduPCWrite, IF_IDWrite;
+	
 	wire [1:0] causeWrite;
 	wire [1:0] cause_out;
 	wire [31:0] EPC_out;
