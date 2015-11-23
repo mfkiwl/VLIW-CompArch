@@ -3,17 +3,16 @@ module topmodule (input clk, input reset);
 	wire [31:0] RwriteData, SwriteData,RmoutBus, RdoutBus, SmoutBus, RnoutBus,SnoutBus,SdoutBus, p1_RmoutBus, p1_RnoutBus,
  p1_RdoutBus, p1_SmoutBus, p1_SnoutBus, p1_SdoutBus, p2_SdoutBus;
 	wire [31:0] branch_signExtOffset,jump_signExtOffset, S_type_out, aluOut, p2_aluOut, p2_S_type_out, p3_aluOut, zero_Memout;
-	wire ALU_Op, R_RegWrite, S_RegWrite, Mem_Write, Mem_Read, branch, jump, PC_Write, exception, aluSrcA, aluSrcB, p1_aluOp, p1_memWrite, p1_memRead, p1_S_regWrite, p1_R_regWrite, p1_branch, p1_jump, p1_aluSrcA, p1_aluSrcB, p2_memRead,  p2_memWrite, p2_S_regWrite, p2_R_regWrite, p2_PCWrite, p2_branch;
+	wire ALU_Op, R_RegWrite, S_RegWrite, Mem_Write, Mem_Read, branch, jump, PC_Write, exception, aluSrcA, aluSrcB, p1_aluOp, p1_memWrite, p1_memRead, p1_S_regWrite, p1_R_regWrite, p1_branch, p1_jump, p1_aluSrcA, p1_aluSrcB, p2_memRead,  p2_memWrite, p2_S_regWrite, p2_R_regWrite, p2_PCWrite, p2_branch, p3_memRead, p3_R_regWrite, p3_S_regWrite;
 	wire p3_RregWrite, p3_SregWrite;
 	wire [2:0] p1_Rm,  p1_Rn, p1_Rd, p1_Sm, p1_Sn, p1_Sd, p1_Imm, p2_Rd, p2_Sd, p3_Rd, p3_Sd;
 	wire S_carry,S_overflow, carry, overflow, p2_carry;
 	wire [1:0] ForwardA, ForwardB , ForwardC,ForwardD;
 	reg [7:0] flag, p2_flag, Memout, p3_memOut;
 	wire [4:0] p1_func;
-	wire ControlMux, hduPCWrite, IF_IDWrite;
-	wire [1:0] causeWrite;
-	 wire [1:0] cause_out;
-	 wire [31:0] EPC_out;
+
+	wire ControlMux, hduPCWrite, IF_IDWrite, ForwardAS, ForwardLS;
+
 
 	register32bit_pipe PC(clk, reset, PC_Write && hduPCWrite, 1, muxout3, PC_out);
 
@@ -39,11 +38,9 @@ module topmodule (input clk, input reset);
 	pipeline1 p1(clk, reset,1, Mem_Read, 1, Mem_Write, R_RegWrite, S_RegWrite, aluSrcA, aluSrcB, branch,	 PC_Write && hduPCWrite, p0_pcOut, RmoutBus, RnoutBus, RdoutBus, SmoutBus, SnoutBus, SdoutBus, ALU_Op, p0_instr[8:6], p0_instr[5:3], p0_instr[2:0], p0_instr[24:22], p0_instr[21:19], p0_instr[18:16], p0_instr[8:6], p0_instr[10:6], p1_pcOut, p1_RmoutBus, p1_RnoutBus, p1_RdoutBus, p1_SmoutBus, p1_SnoutBus, p1_SdoutBus, p1_aluOp, p1_Rm,  p1_Rn, p1_Rd, p1_Sm, p1_Sn, p1_Sd, p1_Imm, p1_memWrite, p1_memRead,
   p1_S_regWrite, p1_R_regWrite, p1_branch, p1_jump, p1_aluSrcA, p1_aluSrcB, p1_func);
 
-  ForwardingUnit F1( p1_Rm,  p1_Rn,  p1_Sm, p1_Sn, p2_Rd,
-  p3_Rd, p3_Sd,p2_R_regWrite,p3_R_regWrite,p3_S_regWrite,
-  ForwardA, ForwardB , ForwardC,ForwardD);
+	ForwardingUnit FU(p1_Rm, p1_Rn, p1_Sm, p1_Sn, p1_Sd, p2_Rd, p2_Sd, p3_Rd, p3_Sd, p1_memWrite, p2_memWrite, p3_memRead, p2_R_regWrite, p3_R_regWrite, p3_S_regWrite, ForwardA, ForwardB , ForwardC, ForwardD, ForwardAS, ForwardLS);
 
-	HazardDetection hdu(Mem_Read, p0_instr[5:3], p0_instr[2:0], p0_instr[24:22], p0_instr[21:19], p0_instr[18:16], p1_Sd, branch || jump, ControlMux, hduPCWrite, IF_IDWrite);
+	HazardDetection hdu(p1_memRead, p0_instr[5:3], p0_instr[2:0], p0_instr[24:22], p0_instr[21:19], p0_instr[18:16], p1_Sd, branch || jump, ControlMux, hduPCWrite, IF_IDWrite);
 
 	mux4to1_32bits M4 (p1_RmoutBus, p2_RdoutBus, p3_RdoutBus, p3_SdoutBus, ForwardA, muxout4);
 	mux4to1_32bits M5 (p1_RnoutBus, p2_RdoutBus, p3_RdoutBus, p3_SdoutBus, ForwardB, muxout5);
@@ -63,6 +60,6 @@ module topmodule (input clk, input reset);
 	Mem DM(clk, reset,p2_memWrite,p2_memRead, p2_S_type_out, p2_SdoutBus [7:0],Memout);
 	zeroExt8to32 zExt(Memout, zero_Memout);
 
-	pipeline3 p3(clk, reset,1,1, p2_Rd, p2_Sd, p2_aluOut, zero_Memout,p2_S_regWrite,p2_R_regWrite, p3_Sd, p3_Rd,p3_aluOut, p3_memOut);
+	pipeline3 p3(clk, reset,1,1, p2_memRead, p2_Rd, p2_Sd, p2_aluOut, zero_Memout,p2_S_regWrite,p2_R_regWrite, p3_memRead, p3_R_regWrite, p3_S_regWrite, p3_Sd, p3_Rd,p3_aluOut, p3_memOut);
 
 endmodule

@@ -1,4 +1,4 @@
-module ForwardingUnit(input [2:0] ID_EXRm,input [2:0] ID_EXRn, input [2:0] ID_EXSm, input [2:0] ID_EXSn, input [2:0] ID_EXSd, input [2:0]  EX_MEMRd, input [2:0]  EX_MEMSd, input [2:0] MEM_WBRd, input [2:0] MEM_WBSd, input ID_EXMW, input EX_MEMMW, input MEM_WBMR, input EX_MEMRRegWrite,input MEM_WBRRegWrite,input MEM_WBSRegWrite,output reg [1:0]  ForwardA, output reg [1:0] ForwardB , output reg [1:0] ForwardC,output reg [1:0] ForwardD output reg ForwardAS, output reg ForwardLS);
+module ForwardingUnit(input [2:0] ID_EXRm,input [2:0] ID_EXRn, input [2:0] ID_EXSm, input [2:0] ID_EXSn, input [2:0] ID_EXSd, input [2:0]  EX_MEMRd, input [2:0]  EX_MEMSd, input [2:0] MEM_WBRd, input [2:0] MEM_WBSd, input ID_EXMW, input EX_MEMMW, input MEM_WBMR, input EX_MEMRRegWrite,input MEM_WBRRegWrite,input MEM_WBSRegWrite,output reg [1:0]  ForwardA, output reg [1:0] ForwardB , output reg [1:0] ForwardC,output reg [1:0] ForwardD, output reg ForwardAS, output reg ForwardLS);
 initial
 begin
 ForwardA = 2'b00; ForwardB = 2'b00; ForwardC = 2'b00; ForwardD = 2'b00; ForwardAS = 1'b0; ForwardLS = 1'b0;
