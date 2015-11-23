@@ -94,17 +94,19 @@ endmodule
 //PIPELINE MODULES
 
 //IF_ID Pipeline
-module pipeline0(input clk, input reset,input regWrite, input decOut1b, input [31:0] instr, output [31:0] p0_instr);
+module pipeline0(input clk, input reset,input regWrite, input decOut1b, input [31:0] pcOut, instr, output [31:0] p0_pcOut, p0_instr);
   register32bit_pipe PCValue(clk, reset, regWrite, decOut1b, instr, p0_instr);
+  register32bit_pipe pc(clk, reset, regWrite, decOut1b, pcOut, p0_pcOut);
 endmodule
 
 //ID_EX Pipeline
 module pipeline1(input clk, input reset, input regWritePipe, input memRead, input decOut1b, memWrite, R_regWrite, S_regWrite,
- aluSrcA, aluSrcB, branch,  PCWrite, input [31:0] RmoutBus, RnoutBus, RdoutBus, SmoutBus, SnoutBus, SdoutBus, aluOp, 
- input [2:0] Rm, Rn, Rd, Sm, Sn, Sd, Imm, input [4:0] func, output [31:0] p1_RmoutBus, p1_RnoutBus, p1_RdoutBus, p1_SmoutBus, p1_SnoutBus, p1_SdoutBus, 
+ aluSrcA, aluSrcB, branch,  PCWrite, input [31:0] p0_pcOut, RmoutBus, RnoutBus, RdoutBus, SmoutBus, SnoutBus, SdoutBus, aluOp, 
+ input [2:0] Rm, Rn, Rd, Sm, Sn, Sd, Imm, input [4:0] func, output [31:0] p1_pcOut, p1_RmoutBus, p1_RnoutBus, p1_RdoutBus, p1_SmoutBus, p1_SnoutBus, p1_SdoutBus, 
  output p1_aluOp, output [2:0] p1_Rm,  p1_Rn, p1_Rd, p1_Sm, p1_Sn, p1_Sd, p1_Imm, output p1_memWrite, p1_memRead,
   p1_S_regWrite, p1_R_regWrite, p1_branch, p1_jump, p1_aluSrcA, p1_aluSrcB, output [4:0] p1_func ); 
   //Reg[]
+  register32bit_pipe pc(clk, reset, regWrite, decOut1b, p0_pcOut, p1_pcOut);
   register32bit_pipe regRm(clk, reset, regWritePipe, decOut1b, RmoutBus, p1_RmoutBus);
   register32bit_pipe regRd(clk, reset, regWritePipe, decOut1b, RdoutBus, p1_RdoutBus);
   register32bit_pipe regSm(clk, reset, regWritePipe, decOut1b, SmoutBus, p1_SmoutBus);
