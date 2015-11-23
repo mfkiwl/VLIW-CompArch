@@ -25,12 +25,12 @@ module topmodule (input clk, input reset);
 	simple_adder A_branch(branch_signExtOffset<<1, PC_out, Branch_add);
 
 	mux2to1_32bits M1(PCadder_out, Jump_add, jump, muxout1);
-	mux2to1_32bits M2(muxout1, Branch_add, branch&&p2_carry, muxout2);
+	mux2to1_32bits M2(muxout1, Branch_add, branch && p2_carry, muxout2);
 	mux2to1_32bits M3(muxout2, 32'b1111_1111_1111_1100, exception || overflow, muxout3);
 
 	Instr_Mem IM(clk,  reset,p3_memWrite,p3_memRead, PC_out, 32'b00000000000000000000000000000000,instr );
 
-	pipeline0 p0 (clk,  reset,1,1, PC_out, instr, p0_pcOut, p0_instr);
+	pipeline0 p0 (clk,  reset,1,1, branch && p2_carry,PC_out, instr, p0_pcOut, p0_instr);
 
 	registerFile R1(clk, reset,  p3_RregWrite, p3_SregWrite,p0_instr[8:6], p0_instr[5:3], p0_instr[2:0], p3_aluOut , p0_instr[24:22], p0_instr[21:19], p0_instr[18:16], p3_memOut, RmoutBus, RdoutBus, RnoutBus, SmoutBus, SnoutBus,SdoutBus);
 
