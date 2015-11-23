@@ -11,6 +11,7 @@ module topmodule (input clk, input reset);
 	reg [7:0] flag, p2_flag, Memout, p3_memOut;
 	wire [4:0] p1_func;
 	wire ControlMux, hduPCWrite, IF_IDWrite;
+	wire [1:0] causeWrite;
 
 	register32bit_pipe PC(clk, reset, PC_Write && hduPCWrite, 1, muxout3, PC_out);
 
@@ -53,7 +54,7 @@ module topmodule (input clk, input reset);
 
 	mux2to1_2bits causemux(exception, causeWrite);
 	register32bit_pipe EPC(clk, reset, exception || overlow, 1, muxout3, PC_out);
-	register2bit CauseReg(clk,reset,exception || overflow,1'b1,2'b00, 2'b{overflow,exception}, cause_out); // 2 - Arithmetic, 1 - undefined
+	register2bit CauseReg(clk,reset,exception || overflow,1'b1,2'b00, causeWrite, cause_out); // 2 - Arithmetic, 1 - undefined
 
 	pipeline2 p2(clk, reset,1, 1, aluOut, p1_SdoutBus, flag , carry, p1_memRead, p1_PCWrite, p1_branch,  p1_memWrite, p1_S_regWrite, p1_R_regWrite, p1_Rd, p1_Sd, S_type_out,	 p2_memRead, p2_memWrite, p2_S_regWrite, p2_R_regWrite,  p2_aluOut, p2_flag, p2_carry, p2_Rd, p2_Sd, p2_PCWrite, p2_branch, p2_S_type_out, p2_SdoutBus);
 
