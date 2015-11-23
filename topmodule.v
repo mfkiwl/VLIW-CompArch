@@ -12,7 +12,7 @@ module topmodule (input clk, input reset);
 	wire [4:0] p1_func;
 
 	wire ControlMux, hduPCWrite, IF_IDWrite, ForwardAS, ForwardLS;
-	
+
 	wire [1:0] causeWrite;
 	wire [1:0] cause_out;
 	wire [31:0] EPC_out;
@@ -50,7 +50,7 @@ module topmodule (input clk, input reset);
 	mux4to1_32bits M5 (p1_RnoutBus, p2_RdoutBus, p3_RdoutBus, p3_SdoutBus, ForwardB, muxout5);
 	mux4to1_32bits M6 (p1_SmoutBus, p2_RdoutBus, p3_RdoutBus, p3_SdoutBus, ForwardC, muxout6);
 	mux4to1_32bits M7 (p1_SnoutBus, p2_RdoutBus, p3_RdoutBus, p3_SdoutBus, ForwardD, muxout7);
-	adder S_type(muxout6, muxout7, S_type_out, S_carry,S_overflow);
+	adder S_type(muxout6, muxout7, S_type_out, S_overflow);
 	mux2to1_32bits M8(muxout4, p1_Imm, p1_aluSrcA, muxout8);
 	mux2to1_32bits M9(muxout5, p1_RdoutBus, p1_aluSrcB, muxout9);
 	alu A1(muxout8, muxout9, p1_func, p1_aluOp, carryOut, aluOut, carry, overflow, zero, neg);
