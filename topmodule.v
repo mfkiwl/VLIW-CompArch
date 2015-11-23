@@ -6,7 +6,7 @@ module topmodule (input clk, input reset);
 	wire ALU_Op, R_RegWrite, S_RegWrite, Mem_Write, Mem_Read, branch, jump, PC_Write, exception, aluSrcA, aluSrcB, p1_aluOp, p1_memWrite, p1_memRead, p1_S_regWrite, p1_R_regWrite, p1_branch, p1_jump, p1_aluSrcA, p1_aluSrcB, p2_memRead,  p2_memWrite, p2_S_regWrite, p2_R_regWrite, p2_PCWrite, p2_branch, p3_memRead, p3_R_regWrite, p3_S_regWrite;
 	wire p3_RregWrite, p3_SregWrite;
 	wire [2:0] p1_Rm,  p1_Rn, p1_Rd, p1_Sm, p1_Sn, p1_Sd, p1_Imm, p2_Rd, p2_Sd, p3_Rd, p3_Sd;
-	wire S_carry,S_overflow, carry, overflow, p2_carry;
+	wire S_carry,S_overflow, carry, overflow, zero, neg, p2_carry, carryOut;
 	wire [1:0] ForwardA, ForwardB , ForwardC,ForwardD;
 	reg [7:0] flag, p2_flag, Memout, p3_memOut;
 	wire [4:0] p1_func;
@@ -53,7 +53,8 @@ module topmodule (input clk, input reset);
 	adder S_type(muxout6, muxout7, S_type_out, S_carry,S_overflow);
 	mux2to1_32bits M8(muxout4, p1_Imm, p1_aluSrcA, muxout8);
 	mux2to1_32bits M9(muxout5, p1_RdoutBus, p1_aluSrcB, muxout9);
-	alu A1(muxout8, muxout9, p1_func, p1_aluOp, p2_carry, aluOut,carry, overflow);
+	alu A1(muxout8, muxout9, p1_func, p1_aluOp, p2_carry, aluOut, carry, overflow);
+	alu A1(muxout8, muxout9, p1_func, p1_aluOp, carryOut, aluOut, carry, overflow, zero, neg);
 
 	mux2to1_2bits causemux(exception, causeWrite);
 	register32bit_pipe EPC(clk, reset, exception || overlow, 1, p1_pcOut, EPC_out);

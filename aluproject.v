@@ -1,4 +1,4 @@
-module alu(input [31:0] aluIn1, input [31:0] aluIn2, input [4:0] func, input aluOp, input iCarry output reg [31:0] aluOut, output reg carry, output reg overflow, output reg zero, output reg neg);
+module alu(input [31:0] aluIn1, input [31:0] aluIn2, input [4:0] func, input aluOp, input iCarry, output reg [31:0] aluOut, output reg carry, output reg overflow, output reg zero, output reg neg);
 always@(aluIn1 or aluIn2 or aluOp)
 	begin
 		zero = 1'b0;
