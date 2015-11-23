@@ -8,7 +8,8 @@ module topmodule (input clk, input reset);
 	wire [2:0] p1_Rm,  p1_Rn, p1_Rd, p1_Sm, p1_Sn, p1_Sd, p1_Imm, p2_Rd, p2_Sd, p3_Rd, p3_Sd;
 	wire S_carry,S_overflow, carry, overflow, zero, neg, p2_carry, carryOut;
 	wire [1:0] ForwardA, ForwardB , ForwardC,ForwardD;
-	reg [7:0] flag, p2_flag, Memout, p3_memOut;
+	reg [7:0] flag, p2_flag, Memout;
+	reg [31:0] p3_memOut;
 	wire [4:0] p1_func;
 
 	wire ControlMux, hduPCWrite, IF_IDWrite, ForwardAS, ForwardLS;
@@ -63,7 +64,6 @@ module topmodule (input clk, input reset);
 
 	Mem DM(clk, reset,p2_memWrite,p2_memRead, p2_S_type_out, p2_SdoutBus [7:0],Memout);
 	zeroExt8to32 zExt(Memout, zero_Memout);
-
 	pipeline3 p3(clk, reset,1,1, p2_memRead, p2_Rd, p2_Sd, p2_aluOut, zero_Memout,p2_S_regWrite,p2_R_regWrite, p3_memRead, p3_R_regWrite, p3_S_regWrite, p3_Sd, p3_Rd,p3_aluOut, p3_memOut);
 
 	//register1bit(clk,reset,regWrite,decOut1b,init, d_in,q_out);

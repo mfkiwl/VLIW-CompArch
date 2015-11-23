@@ -36,25 +36,25 @@ module Instr_Mem(input clk, input reset,input memWrite,input memRead, input [31:
 
 	decoder4to16 dec0( pc[4:1], decOut);
 
-	register_Mem r0(clk,reset,memWrite,decOut[0],32'b 0101111010011100_0001110001011101,dataIn,Qout0);
-	register_Mem r1(clk,reset,memWrite,decOut[1],32'b 1101011111111111_0100001001101001,dataIn,Qout1);
-	register_Mem r2(clk,reset,memWrite,decOut[2],32'b 0101111000100101_0001110001100110,dataIn,Qout2);
-	register_Mem r3(clk,reset,memWrite,decOut[3],32'b 0101111000110001_0100000110110010,dataIn,Qout3);
+	register32bit r0(clk,reset,memWrite,decOut[0],32'b 0101111010011100_0001110001011101,dataIn,Qout0);
+	register32bit r1(clk,reset,memWrite,decOut[1],32'b 1101011111111111_0100001001101001,dataIn,Qout1);
+	register32bit r2(clk,reset,memWrite,decOut[2],32'b 0101111000100101_0001110001100110,dataIn,Qout2);
+	register32bit r3(clk,reset,memWrite,decOut[3],32'b 0101111000110001_0100000110110010,dataIn,Qout3);
 
-	register_Mem r4(clk,reset,memWrite,decOut[4],32'b 0101011010011110_0001110001011011,dataIn,Qout4);
-	register_Mem r5(clk,reset,memWrite,decOut[5],32'b 1110000000000010_0001110001011010,dataIn,Qout5);
-	register_Mem r6(clk,reset,memWrite,decOut[6],32'b 1101011100000100_0100000101100010,dataIn,Qout6);
-	register_Mem r7(clk,reset,memWrite,decOut[7],32'b 1101011100001010_0001110001111110,dataIn,Qout7);
+	register32bit r4(clk,reset,memWrite,decOut[4],32'b 0101011010011110_0001110001011011,dataIn,Qout4);
+	register32bit r5(clk,reset,memWrite,decOut[5],32'b 1110000000000010_0001110001011010,dataIn,Qout5);
+	register32bit r6(clk,reset,memWrite,decOut[6],32'b 1101011100000100_0100000101100010,dataIn,Qout6);
+	register32bit r7(clk,reset,memWrite,decOut[7],32'b 1101011100001010_0001110001111110,dataIn,Qout7);
 
-	register_Mem r8(clk,reset,memWrite,decOut[8],32'b 1101011111110000_0001110001110111,dataIn,Qout8);
-	register_Mem r9(clk,reset,memWrite,decOut[9],32'b 0101011011101100_0001110110111111,dataIn,Qout9);
-	register_Mem r10(clk,reset,memWrite,decOut[10],32'b 01011111000001_100100000101000111,dataIn,Qout10);
-	register_Mem r11(clk,reset,memWrite,decOut[11],32'b 01010110111010_010100000110100100,dataIn,Qout11);
+	register32bit r8(clk,reset,memWrite,decOut[8],32'b 1101011111110000_0001110001110111,dataIn,Qout8);
+	register32bit r9(clk,reset,memWrite,decOut[9],32'b 0101011011101100_0001110110111111,dataIn,Qout9);
+	register32bit r10(clk,reset,memWrite,decOut[10],32'b 01011111000001_100100000101000111,dataIn,Qout10);
+	register32bit r11(clk,reset,memWrite,decOut[11],32'b 01010110111010_010100000110100100,dataIn,Qout11);
 
-	register_Mem r12(clk,reset,memWrite,decOut[12],32'b 01010110010001_101111111111111111,dataIn,Qout12);
-	register_Mem r13(clk,reset,memWrite,decOut[13],32'b 00000000000000_000000000000000000,dataIn,Qout13);
-	register_Mem r14(clk,reset,memWrite,decOut[14],32'b 00000000000000_000000000000000000, dataIn, Qout14);
-	register_Mem r15(clk,reset,memWrite,decOut[15],32'b 00000000000000_000000000000000000,dataIn,Qout15);
+	register32bit r12(clk,reset,memWrite,decOut[12],32'b 01010110010001_101111111111111111,dataIn,Qout12);
+	register32bit r13(clk,reset,memWrite,decOut[13],32'b 00000000000000_000000000000000000,dataIn,Qout13);
+	register32bit r14(clk,reset,memWrite,decOut[14],32'b 00000000000000_000000000000000000, dataIn, Qout14);
+	register32bit r15(clk,reset,memWrite,decOut[15],32'b 00000000000000_000000000000000000,dataIn,Qout15);
 
 	mux16to1 mMem (Qout0,Qout1,Qout2,Qout3,Qout4,Qout5,Qout6,Qout7,Qout8,Qout9,Qout10,Qout11,Qout12,Qout13,Qout14,Qout15,pc[4:1],IR);
 endmodule

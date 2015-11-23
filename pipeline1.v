@@ -170,7 +170,7 @@ endmodule
 //MEW_WB
 module pipeline3(input clk, input reset,input regWritePipe, input decOut1b, p2_MR, input [2:0] p2_Rd, p2_Sd, input [31:0] p2_aluOut, input [31:0] memOut,input p2_S_regWrite,p2_R_regWrite, output p3_MR, p3_R_regWrite, p3_S_regWrite, output [2:0] p3_Sd, p3_Rd,output [31:0] p3_aluOut,output [31:0] p3_memOut);
 	register32bit_pipe ALUOUT(clk, reset, regWritePipe, decOut1b, p2_aluOut, p3_aluOut );
-	register32bit_pipe MEMORY(clk, reset, regWritePipe, decOut1b, memOut, p3_memOut);
+	register32bit MEMORY(clk, reset, regWritePipe, decOut1b, memOut, p3_memOut);
 
 	register3bit_pipe decode_Rd(clk, reset, regWritePipe, decOut1b, p2_Rd, p3_Rd);
 	register3bit_pipe decode_Sd(clk, reset, regWritePipe, decOut1b, p2_Sd, p3_Sd);
