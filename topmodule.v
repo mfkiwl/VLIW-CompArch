@@ -66,4 +66,6 @@ module topmodule (input clk, input reset);
 
 	pipeline3 p3(clk, reset,1,1, p2_memRead, p2_Rd, p2_Sd, p2_aluOut, zero_Memout,p2_S_regWrite,p2_R_regWrite, p3_memRead, p3_R_regWrite, p3_S_regWrite, p3_Sd, p3_Rd,p3_aluOut, p3_memOut);
 
+	//register1bit(clk,reset,regWrite,decOut1b,init, d_in,q_out);
+
 endmodule

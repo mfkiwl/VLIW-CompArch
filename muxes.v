@@ -20,12 +20,12 @@ always@(in1, in2, sel)
 end
 endmodule
 
-module mux2to1_2bits(input selector, output reg [2:0] muxout);
+module mux2to1_2bits(input selector, output reg [1:0] muxout);
 always @(selector)
 begin
   case (selector)
-    0: muxout = 2'10;
-    1: muxout = 2'01;
+    0: muxout = 2'b10;
+    1: muxout = 2'b01;
   endcase
 end
 endmodule

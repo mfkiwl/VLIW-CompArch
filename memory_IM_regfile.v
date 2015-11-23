@@ -8,6 +8,9 @@ module D_ff_Mem (input clk, input reset, input regWrite, input decOut1b,input in
 	end
 endmodule
 
+module register1bit(input clk,input reset,input regWrite,input decOut1b,input init, input d_in, output q_out);
+	D_ff_Mem dMem0 (clk,reset,regWrite,decOut1b,init,d_in,q_out);
+endmodule
 
 module register2bit(input clk,input reset,input regWrite,input decOut1b,input [1:0]init, input [1:0] d_in, output [1:0] q_out);
 	D_ff_Mem dMem0 (clk,reset,regWrite,decOut1b,init[0],d_in[0],q_out[0]);
