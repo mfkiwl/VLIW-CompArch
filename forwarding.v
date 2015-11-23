@@ -4,8 +4,8 @@ begin
 ForwardA = 2'b00; ForwardB = 2'b00; ForwardC = 2'b00; ForwardD = 2'b00; ForwardAS = 1'b0; ForwardLS = 1'b0;
 end
  //Forward A
- 
- always@(EX_MEMRRegWrite or MEM_WBRRegWrite or  MEM_WBSRegWrite or ID_EXRm or EX_MEMRd or MEM_WBRd or MEM_WBSd) 
+
+ always@(EX_MEMRRegWrite or MEM_WBRRegWrite or  MEM_WBSRegWrite or ID_EXRm or EX_MEMRd or MEM_WBRd or MEM_WBSd)
  begin
  if((EX_MEMRRegWrite)&&(EX_MEMRd != 0)&&(EX_MEMRd == ID_EXRm))//forwarding rd from ex_mem to rm
 	ForwardA = 2'b01;
@@ -16,9 +16,9 @@ end
  else
 	ForwardA=2'b00;
  end
- 
+
  //Forward B
- always@(EX_MEMRRegWrite or MEM_WBRRegWrite or MEM_WBSRegWrite or ID_EXRn or EX_MEMRd or MEM_WBRd or MEM_WBSd) 
+ always@(EX_MEMRRegWrite or MEM_WBRRegWrite or MEM_WBSRegWrite or ID_EXRn or EX_MEMRd or MEM_WBRd or MEM_WBSd)
  begin
  if((EX_MEMRRegWrite)&&(EX_MEMRd != 0)&&(EX_MEMRd == ID_EXRn))//forwarding rd from ex_mem to rn
 	ForwardB = 2'b01;
@@ -31,7 +31,7 @@ end
  end
 
  //Forward C
- always@(EX_MEMRRegWrite or MEM_WBRRegWrite or MEM_WBSRegWrite or ID_EXSm or EX_MEMRd or MEM_WBRd or MEM_WBSd) 
+ always@(EX_MEMRRegWrite or MEM_WBRRegWrite or MEM_WBSRegWrite or ID_EXSm or EX_MEMRd or MEM_WBRd or MEM_WBSd)
  begin
  if((EX_MEMRRegWrite)&&(EX_MEMRd != 0)&&(EX_MEMRd == ID_EXSm))//forwarding rd from ex_mem to sm
 	ForwardC = 2'b01;//
@@ -42,9 +42,9 @@ end
  else
 	ForwardC=2'b00;
  end
- 
+
  //ForwardD
- always@(EX_MEMRRegWrite or MEM_WBRRegWrite or MEM_WBSRegWrite or ID_EXSn or EX_MEMRd or MEM_WBRd or MEM_WBSd) 
+ always@(EX_MEMRRegWrite or MEM_WBRRegWrite or MEM_WBSRegWrite or ID_EXSn or EX_MEMRd or MEM_WBRd or MEM_WBSd)
  begin
  if((EX_MEMRRegWrite)&&(EX_MEMRd != 0)&&(EX_MEMRd == ID_EXSn))//forwarding rd from ex_mem to sn
 	ForwardD = 2'b01;
@@ -54,21 +54,21 @@ end
 	ForwardD = 2'b11;
  else
 	ForwardD=2'b00;
-
+end
 //Add - Store
 always@(ID_EXMW or EX_MEMRRegWrite or EX_MEMRd or ID_EXSd)
+begin
 	if(ID_EXMW && EX_MEMRRegWrite && (EX_MEMRd == ID_EXSd) && (EX_MEMRd != 0))
 		ForwardAS = 1;
 	else
 		ForwardAS = 0;
-
+end
 //Load - Store
 always@(EX_MEMMW or MEM_WBMR or EX_MEMSd or MEM_WBSd)
-	if((MEM_WBMR == EX_MEMMW) && (MEM_WBSd == EX_MEMSd) && (MEM_WBSd != 0))
+	begin
+  if((MEM_WBMR == EX_MEMMW) && (MEM_WBSd == EX_MEMSd) && (MEM_WBSd != 0))
 		ForwardLS = 1;
 	else
 		ForwardLS = 0;
  end
  endmodule
-
- 
