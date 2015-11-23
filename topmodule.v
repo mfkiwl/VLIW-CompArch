@@ -53,7 +53,6 @@ module topmodule (input clk, input reset);
 	adder S_type(muxout6, muxout7, S_type_out, S_carry,S_overflow);
 	mux2to1_32bits M8(muxout4, p1_Imm, p1_aluSrcA, muxout8);
 	mux2to1_32bits M9(muxout5, p1_RdoutBus, p1_aluSrcB, muxout9);
-	alu A1(muxout8, muxout9, p1_func, p1_aluOp, p2_carry, aluOut, carry, overflow);
 	alu A1(muxout8, muxout9, p1_func, p1_aluOp, carryOut, aluOut, carry, overflow, zero, neg);
 
 	mux2to1_2bits causemux(exception, causeWrite);
